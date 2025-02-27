@@ -5,9 +5,9 @@ on:
   pull_request:
     branches: [ "main" ]
 jobs:
-SwiftFormat:
-  runs-on: macos-latest
-  steps:
-    - uses: actions/checkout@v4
-    - name: SwiftFormat
-      run: swiftformat --lint . --strict --reporter github-actions-log
+  SwiftFormat:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: SwiftFormat
+        run: swiftformat --lint . --strict --reporter github-actions-log
