@@ -8,10 +8,6 @@
 import SwiftUI
 
 struct ContentView: View {
-    struct Response: Codable {
-        var results: [Game]
-    }
-
     struct Game: Codable {
         var id: Int
         var date: String
@@ -19,7 +15,6 @@ struct ContentView: View {
         var score: Score
         var isHomeGame: Bool
         var team: String
-        
     }
     
     struct Score: Codable {
@@ -27,24 +22,34 @@ struct ContentView: View {
         var unc: Int
     }
     
-    @State private var games = [Game]()
+    @State private var results = [Game]()
     
     var body: some View {
-        List(games, id: \.id) { game in
+        
+        Text("UNC Basketball")
+            .font(.title)
+            .bold()
+        List(results, id: \.id) { game in
             HStack {
-                VStack {
-                    Text("test")
+                VStack (alignment: .leading){
+                    Text("UNC vs. \(game.opponent)")
+                    Text(game.date)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
                 }
                 Spacer()
-                VStack {
+                VStack (alignment: .trailing){
                     Text("\(game.score.unc) - \(game.score.opponent)")
                     Text(
                         game.isHomeGame ? "Home" : "Away"
                     )
-                    .font(.caption)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
                 }
             }
+            
         }
+        .bold()
         .task {
             await loadData()
         }
@@ -57,10 +62,8 @@ struct ContentView: View {
         
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
-            
-            if let decodedResponse = try? JSONDecoder().decode(Response.self, from: data) {
-                print("Decoded games:", decodedResponse)
-                games = decodedResponse.results
+            if let decodedResponse = try? JSONDecoder().decode([Game].self, from: data) {
+                results = decodedResponse
             }
         } catch {
             print("Invalid Data")
