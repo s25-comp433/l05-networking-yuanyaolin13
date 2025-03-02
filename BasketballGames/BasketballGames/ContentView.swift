@@ -32,7 +32,7 @@ struct ContentView: View {
         List(results, id: \.id) { game in
             HStack {
                 VStack (alignment: .leading){
-                    Text("UNC vs. \(game.opponent)")
+                    Text("\(game.team) UNC vs. \(game.opponent)")
                     Text(game.date)
                         .font(.caption)
                         .foregroundStyle(.secondary)
